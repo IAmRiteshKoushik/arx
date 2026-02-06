@@ -9,10 +9,10 @@ distributed AR experiences.
 
 ARX consists of several interconnected components:
 
-- **Supervisor Service**: Location-based routing and load balancing for edge nodes
+- **Supervisor Node**: Location-based routing and load balancing for edge nodes
 - **Admin Dashboard**: Real-time monitoring and management interface
 - **Edge Processing Nodes**: Distributed video processing with adaptive routing
-- **Mobile AR Applications**: React Native apps with on-device AI processing
+- **Mobile AR Application**: React Native apps with on-device AI processing
 
 ## Key Features
 
