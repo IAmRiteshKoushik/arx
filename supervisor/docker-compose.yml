@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: supervisor_postgres
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_DB: ${DB_NAME:-arx_supervisor}
+    volumes:
+      - supervisor_postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - supervisor_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: supervisor_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - supervisor_redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - supervisor_network
+
+networks:
+  supervisor_network:
+    driver: bridge
+    name: supervisor_network
+
+volumes:
+  supervisor_postgres_data:
+    name: supervisor_postgres_data
+  supervisor_redis_data:
+    name: supervisor_redis_data
